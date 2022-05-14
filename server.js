@@ -14,7 +14,7 @@ app.use(express.urlencoded({
 require("./routes/auth.route")(app)
 // app.post("/api/user/register", controller.saveUser);
 // app.get("/api/user/all", controller.getUsers);
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
        console.log("server running in port ${port}");
