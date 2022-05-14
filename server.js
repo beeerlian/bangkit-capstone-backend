@@ -3,7 +3,7 @@ const cors = require("cors");
 const app = express();
 const controller = require("./controllers/user.controller");
 var corsOptions = {
-       origin: "http://localhost:8080"
+       origin: "https://securitycam.herokuapp.com"
 };
 app.use(cors(corsOptions));
 app.use(express.json());
