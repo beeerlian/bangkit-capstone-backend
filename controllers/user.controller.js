@@ -8,19 +8,18 @@ const user = {
        "photo": "https://pbs.twimg.com/profile_images/735509975649378305/B81JwLT7.jpg"
 }
 
-exports.saveUser = async function (req, res) {
-       const err = await userDb.saveUser(user);
-       if (err) {
-              response.errorResponse(res, err);
+exports.findUserByUsernameOrEmail = async function (req, res) {
+       const result = await userDb.getUsers();
+       if (!result) {
+              response.errorResponse(res, "Failed to fetch data");
        }
        else {
-              response.successResponse(res, undefined, user);
+              response.successResponse(res, undefined, result);
        }
 }
 
 exports.getUsers = async function (req, res) {
        const result = await userDb.getUsers();
-       console.log(result)
        if (!result) {
               response.errorResponse(res, "Failed to fetch data");
        }

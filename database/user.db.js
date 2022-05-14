@@ -1,11 +1,6 @@
-const fs = require('firebase-admin');
-const serviceAccount = require("../utils/securitycam-service-account.json");
+const db = require("./firestore.db")
+const User = require("../models/user.model")
 
-fs.initializeApp({
-       credential: fs.credential.cert(serviceAccount)
-});
-
-let db = fs.firestore();
 const userRef = db.collection('users');
 
 const getUsers = async () => {
@@ -30,8 +25,45 @@ const saveUser = async (userData) => {
               }
        })
 }
+const updateUser = async (userData) => {
+       userRef.doc(userData.id).set(userData, function (error) {
+              if (error) {
+                     return error
+              }
+       })
+}
+
+const findUserByUsernameOrEmail = async (user) => {
+       let snapshot
+       if (!user.username && !user.email) {
+              return;
+       }
+       if (user.username) {
+              snapshot = await userRef.where('username', '==', user.username).get();
+              if (snapshot.empty && !user.email) {
+                     return;
+              }
+       }
+       if (user.email) {
+              snapshot = await userRef.where('email', '==', user.email).get();
+              if (snapshot.empty) {
+                     return;
+              }
+       }
+       const result = User({
+              id: snapshot.docs[0].id,
+              username: snapshot.docs[0].data().username,
+              email: snapshot.docs[0].data().email,
+              password: snapshot.docs[0].data().password,
+       })
+       return result;
+
+}
+
 
 module.exports = {
        getUsers,
-       saveUser
+       saveUser,
+       findUserByUsernameOrEmail,
+       updateUser
 }
