@@ -4,10 +4,11 @@ const config = require("../configs/auth.config.js");
 const db = require("../database/user.db")
 
 verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
+  let token = req.headers["x-access-token"] || req.headers["authorization"].split(' ')[1];
+  console.log(token)
+
   if (!token) {
     return response.noAccessTokenResponse(res)
-
   }
   //verify sended tokens
   jwt.verify(token, config.secret, async (err, decodedToken) => {
