@@ -1,19 +1,26 @@
 const jwt = require("jsonwebtoken");
+const response = require("../models/response.model");
 const config = require("../configs/auth.config.js");
+const db = require("../database/user.db")
 
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
   if (!token) {
-    return "No token provided!"
-    
+    return response.noAccessTokenResponse(res)
+
   }
-  jwt.verify(token, config.secret, (err, decoded) => {
+  //verify sended tokens
+  jwt.verify(token, config.secret, async (err, decodedToken) => {
     if (err) {
-      return res.status(401).send({
-        message: "Unauthorized!"
-      });
+      return response.unauthorizedResponse(res);
     }
-    req.userId = decoded.id;
+    req.userId = decodedToken.id;
+    //user will get new token when he's logged in, so i will check is sended token's is newest or not 
+    const userLastloginTime = (await db.getUserById(req.userId)).lastLoggedIn;
+    console.log(`${userLastloginTime} > ${decodedToken.created}`);
+    if (userLastloginTime > decodedToken.created) {
+      return response.expiringTokenResponse(res);
+    }
     next();
   });
 };

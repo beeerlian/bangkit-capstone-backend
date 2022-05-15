@@ -1,5 +1,5 @@
 
-const errorResponse = (res, message) => {
+exports.errorResponse = (res, message) => {
        res.status(404).send(
               {
                      success: false,
@@ -9,7 +9,7 @@ const errorResponse = (res, message) => {
 
 }
 
-const successResponse = (res, message, data) => {
+exports.successResponse = (res, message, data) => {
        res.status(200).send(
               {
                      success: true,
@@ -20,7 +20,7 @@ const successResponse = (res, message, data) => {
 
 }
 
-const serverErrorResponse = (res, message, data) => {
+exports.serverErrorResponse = (res, message, data) => {
        res.status(500).send(
               {
                      success: false,
@@ -30,4 +30,21 @@ const serverErrorResponse = (res, message, data) => {
 
 }
 
-module.exports = { errorResponse, successResponse, serverErrorResponse }
+exports.noAccessTokenResponse = (res) => {
+       return res.status(401).send({
+              success: false,
+              message: "Cannot access without access token"
+       });
+}
+exports.unauthorizedResponse = (res) => {
+       return res.status(401).send({
+              success: false,
+              message: "you`re unautorized"
+       });
+}
+exports.expiringTokenResponse = (res) => {
+       return res.status(401).send({
+              success: false,
+              message: "token is expired"
+       });
+}

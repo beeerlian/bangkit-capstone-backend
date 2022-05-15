@@ -1,15 +1,10 @@
 const userDb = require("../database/user.db")
 const response = require("../models/response.model")
-
-const user = {
-       "firstName": "Bang",
-       "lastName": "Cruise",
-       "email": "tomcruise@gmail.com",
-       "photo": "https://pbs.twimg.com/profile_images/735509975649378305/B81JwLT7.jpg"
-}
+const User = require("../models/user.model")
 
 exports.findUserByUsernameOrEmail = async function (req, res) {
-       const result = await userDb.getUsers();
+
+       const result = await userDb.findUserByUsernameOrEmail(req.params);
        if (!result) {
               response.errorResponse(res, "Failed to fetch data");
        }

@@ -5,6 +5,4 @@ fs.initializeApp({
        credential: fs.credential.cert(serviceAccount)
 });
 
-let db = fs.firestore();
-
-module.exports = db;
+module.exports = fs

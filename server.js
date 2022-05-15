@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const controller = require("./controllers/user.controller");
+
 var corsOptions = {
        origin: "https://securitycam.herokuapp.com"
 };
@@ -12,8 +12,9 @@ app.use(express.urlencoded({
 }));
 
 require("./routes/auth.route")(app)
-// app.post("/api/user/register", controller.saveUser);
-// app.get("/api/user/all", controller.getUsers);
+require("./routes/user.route")(app)
+require("./routes/notification.route")(app)
+
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => {

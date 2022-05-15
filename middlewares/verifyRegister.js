@@ -1,4 +1,4 @@
-const db = require("../database/firestore.db")
+const db = require("../database/firestore")
 const response = require("../models/response.model")
 checkDuplicateUsernameOrEmail = async (req, res, next) => {
        console.log("checkDuplicateUsernameOrEmail...");

@@ -17,7 +17,7 @@ exports.signup = async (req, res) => {
               response.errorResponse(res, err);
        }
        else {
-              response.successResponse(res, "User was registered successfully!", user);
+              response.successResponse(res, "user was registered successfully!", user);
        }
 };
 exports.signin = async (req, res) => {
@@ -29,21 +29,26 @@ exports.signin = async (req, res) => {
        }
        const userRegistered = await db.findUserByUsernameOrEmail(user);
        if (!userRegistered) {
-              response.errorResponse(res, "User not found");
+              response.errorResponse(res, "username/email not found");
        }
        var passwordIsValid = bcrypt.compareSync(
               req.body.password,
               userRegistered.password
        );
        if (!passwordIsValid) {
-              return response.errorResponse(res, "Password doesnt match");
+              return response.errorResponse(res, "password doesnt match");
        }
-       var token = jwt.sign({ id: userRegistered.id }, config.secret, {
-              expiresIn: 86400
+       userRegistered.lastLoggedIn = new Date().getTime();
+
+       var token = jwt.sign({
+              id: userRegistered.id,
+              created: userRegistered.lastLoggedIn
+       }, config.secret, {
+              expiresIn: 86400,
        });
-       userRegistered.accessToken = token;
        userRegistered.tokenExpired = 86400;
-       db.updateUser(userRegistered)
-       return response.successResponse(res, "Logged in successfully", userRegistered);
+       db.updateUser(userRegistered.toObj());
+       userRegistered.accessToken = token;
+       return response.successResponse(res, "logged in successfully", userRegistered);
 
 };

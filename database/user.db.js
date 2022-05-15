@@ -1,9 +1,9 @@
-const db = require("./firestore.db")
+const db = require("./firestore")
 const User = require("../models/user.model")
 
 const userRef = db.collection('users');
 
-const getUsers = async () => {
+exports.getUsers = async () => {
        const result = await userRef.get();
        if (result) {
               userData = [];
@@ -18,22 +18,37 @@ const getUsers = async () => {
        }
 }
 
-const saveUser = async (userData) => {
-       userRef.add(userData, function (error) {
-              if (error) {
-                     return error
-              }
-       })
-}
-const updateUser = async (userData) => {
-       userRef.doc(userData.id).set(userData, function (error) {
-              if (error) {
-                     return error
-              }
-       })
+exports.getUserById = async (userId) => {
+       const result = await userRef.doc(userId).get();
+       if (result) {
+              const userData = new User(result.data())
+              return userData;
+       }
+       return;
 }
 
-const findUserByUsernameOrEmail = async (user) => {
+exports.saveUser = async (userData) => {
+       userRef.add(userData, function (error) {
+              if (error) {
+                     return error;
+              }
+       })
+}
+exports.updateUser = async (userData) => {
+       userRef.doc(userData.id).update(userData).then(
+              function (data) {
+                     console.log("success update user data " + data.writeTime);
+              },
+              function (error) {
+                     if (error) {
+                            console.log(error);
+                            return error
+                     }
+              }
+       );
+}
+
+exports.findUserByUsernameOrEmail = async (user) => {
        let snapshot
        if (!user.username && !user.email) {
               return;
@@ -50,7 +65,7 @@ const findUserByUsernameOrEmail = async (user) => {
                      return;
               }
        }
-       const result = User({
+       const result = new User({
               id: snapshot.docs[0].id,
               username: snapshot.docs[0].data().username,
               email: snapshot.docs[0].data().email,
@@ -58,12 +73,4 @@ const findUserByUsernameOrEmail = async (user) => {
        })
        return result;
 
-}
-
-
-module.exports = {
-       getUsers,
-       saveUser,
-       findUserByUsernameOrEmail,
-       updateUser
 }
