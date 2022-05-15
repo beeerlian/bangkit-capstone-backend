@@ -1,7 +1,5 @@
-
+require('dotenv').config();
 const app = require("./firebase")
 
-// const gcs = getStorage(app).bucket();
-const storage = app.storage().bucket(process.env.BUCKET_NAME || "gs://securitycam-954ab.appspot.com")
-
+const storage = app.storage().bucket(process.env.BUCKET_NAME)
 module.exports = storage;
