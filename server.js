@@ -14,6 +14,17 @@ app.use(express.urlencoded({
        extended: true
 }));
 
+
+app.get('/', (req, res, next) => {
+       res.status(200).json({
+              status: 'success',
+              data: {
+                     name: 'securitycam API',
+                     version: '0.1.0'
+              }
+       });
+
+});
 authRoute(app)
 userRoute(app)
 notificationRoute(app)
