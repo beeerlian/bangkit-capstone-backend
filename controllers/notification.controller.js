@@ -3,11 +3,10 @@ const response = require("../models/response.model")
 const storage = require("../database/storage.db")
 const db = require("../database/notification.db")
 
+
 exports.sendNotication = async (req, res) => {
        let notif = new Notification(req.body);
-       if (!notif.from || !notif.to) {
-              return response.errorResponse(res, `from and to must be filled`)
-       }
+       notif.from = req.userId
        try {
               notif.id = await db.saveNotification(notif.toObj());
               notif.imagePath = await storage.saveImage(req.file);

@@ -13,7 +13,7 @@ exports.getUsers = async () => {
                             user: element.data()
                      });
               });
-              return userData;
+              return { userData, error };
 
        }
 }
@@ -28,11 +28,13 @@ exports.getUserById = async (userId) => {
 }
 
 exports.saveUser = async (userData) => {
-       userRef.add(userData, function (error) {
+       let result = await userRef.add(userData, function (error) {
               if (error) {
-                     return error;
+                     return { error };
               }
-       })
+       });
+       userResultId = result.id
+       return { userResultId }
 }
 exports.updateUser = async (userData) => {
        userRef.doc(userData.id).update(userData).then(
@@ -48,29 +50,25 @@ exports.updateUser = async (userData) => {
        );
 }
 
-exports.findUserByUsernameOrEmail = async (user) => {
-       let snapshot
-       if (!user.username && !user.email) {
-              return;
-       }
-       if (user.username) {
-              snapshot = await userRef.where('username', '==', user.username).get();
-              if (snapshot.empty && !user.email) {
-                     return;
+exports.findUserByUsernameOrEmail = async (userData) => {
+       let snapshot, error, user;
+       if (userData.username) {
+              snapshot = await userRef.where('username', '==', userData.username).get();
+              if (snapshot.empty && !userData.email) {
+                     error = "user not found ";
+                     return { error };
               }
        }
-       if (user.email) {
-              snapshot = await userRef.where('email', '==', user.email).get();
+       if (userData.email) {
+              snapshot = await userRef.where('email', '==', userData.email).get();
               if (snapshot.empty) {
-                     return;
+                     error = "user not found ";
+                     return { error };
               }
        }
-       const result = new User({
-              id: snapshot.docs[0].id,
-              username: snapshot.docs[0].data().username,
-              email: snapshot.docs[0].data().email,
-              password: snapshot.docs[0].data().password,
-       })
-       return result;
+
+       user = new User(snapshot.docs[0].data())
+       
+       return { user };
 
 }

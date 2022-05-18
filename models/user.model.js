@@ -16,6 +16,7 @@ class User {
               this.username = obj.username || null;
               this.email = obj.email || null;
               this.password = obj.password || null;
+              this.role = obj.role || null;
               this.fcm = obj.fcm || null;
               this.lastLoggedIn = obj.lastLoggedIn || null;
        }
@@ -25,6 +26,7 @@ class User {
                      username: this.username,
                      email: this.email,
                      password: this.password,
+                     role: this.role,
                      fcm: this.fcm,
                      lastLoggedIn: this.lastLoggedIn,
               }
@@ -34,6 +36,7 @@ class User {
                      id: this.id,
                      username: this.username,
                      email: this.email,
+                     role: this.role,
                      lastLoggedIn: this.lastLoggedIn,
               }
        }

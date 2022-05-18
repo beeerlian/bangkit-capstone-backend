@@ -5,7 +5,6 @@ const db = require("../database/user.db")
 
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"] || req.headers["authorization"].split(' ')[1];
-  console.log(token)
 
   if (!token) {
     return response.noAccessTokenResponse(res)
@@ -18,7 +17,6 @@ verifyToken = (req, res, next) => {
     req.userId = decodedToken.id;
     //user will get new token when he's logged in, so i will check is sended token's is newest or not 
     const userLastloginTime = (await db.getUserById(req.userId)).lastLoggedIn;
-    console.log(`${userLastloginTime} > ${decodedToken.created}`);
     if (userLastloginTime > decodedToken.created) {
       return response.expiringTokenResponse(res);
     }

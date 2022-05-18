@@ -1,5 +1,7 @@
+require("dotenv").config();
 const fs = require('firebase-admin');
-const serviceAccount = require("../utils/securitycam-service-account.json");
+let buff = new Buffer.from(process.env.SERVICE_ACCOUNT, 'base64');
+const serviceAccount = JSON.parse(buff.toString('utf-8'));
 
 fs.initializeApp({
        credential: fs.credential.cert(serviceAccount)
