@@ -2,7 +2,6 @@ const controller = require("../controllers/auth.controller")
 const auth = require("../middlewares/middleware");
 
 module.exports = function (app) {
-       console.log('auth route has been initialized')
        app.use(function (req, res, next) {
               res.header(
                      "Access-Control-Allow-Headers",
