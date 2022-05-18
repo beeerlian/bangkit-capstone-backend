@@ -5,6 +5,7 @@ const userRef = db.collection('users');
 
 exports.getUsers = async () => {
        const result = await userRef.get();
+       let error = "cannot read users data, something went wrong"
        if (result) {
               userData = [];
               result.docs.forEach(element => {
@@ -13,9 +14,10 @@ exports.getUsers = async () => {
                             user: element.data()
                      });
               });
-              return { userData, error };
+              return { userData };
 
        }
+       return { error };
 }
 
 exports.getUserById = async (userId) => {
@@ -68,7 +70,7 @@ exports.findUserByUsernameOrEmail = async (userData) => {
        }
 
        user = new User(snapshot.docs[0].data())
-       
+
        return { user };
 
 }

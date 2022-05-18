@@ -14,11 +14,11 @@ exports.findUserByUsernameOrEmail = async function (req, res) {
 }
 
 exports.getUsers = async function (req, res) {
-       const result = await userDb.getUsers();
-       if (!result) {
+       const { userData, error } = await userDb.getUsers();
+       if (error) {
               response.errorResponse(res, "Failed to fetch data");
        }
        else {
-              response.successResponse(res, undefined, result);
+              response.successResponse(res, undefined, userData);
        }
 }
