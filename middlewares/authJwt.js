@@ -4,8 +4,9 @@ const config = require("../configs/auth.config.js");
 const db = require("../database/user.db")
 
 verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"] || req.headers["authorization"].split(' ')[1];
   console.log(req.headers)
+  console.log(typeof req.headers["authorization"])
+  let token = req.headers["x-access-token"] || req.headers["authorization"].split(' ')[1];
   if (!token) {
     return response.noAccessTokenResponse(res)
   }
