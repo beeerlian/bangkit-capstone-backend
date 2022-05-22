@@ -25,7 +25,6 @@ exports.signin = async (req, res) => {
        if (error) {
               return response.errorResponse(res, error);
        }
-       console.log(user)
        var passwordIsValid = bcrypt.compareSync(
               req.body.password,
               user.password
@@ -37,10 +36,8 @@ exports.signin = async (req, res) => {
        var token = jwt.sign({
               id: user.id,
               created: user.lastLoggedIn
-       }, config.secret, {
-              expiresIn: 86400,
-       });
-       user.tokenExpired = 86400;
+       }, config.secret);
+       user.tokenExpired = 0;
        db.updateUser(user.toObj());
        user.accessToken = token;
        return response.successResponse(res, "logged in successfully", user);

@@ -2,6 +2,7 @@ const db = require("./firestore")
 const User = require("../models/user.model")
 
 const userRef = db.collection('users');
+const pairRequestRef = db.collection('pairs');
 
 exports.getUsers = async () => {
        const result = await userRef.get();
@@ -74,3 +75,45 @@ exports.findUserByUsernameOrEmail = async (userData) => {
        return { user };
 
 }
+
+exports.searchUserByUsernameOrEmail = async (target) => {
+       let snapshot, error;
+       const userResults = [];
+       try {
+              if (target.username) {
+                     snapshot = await userRef
+                            .where('username', '>=', target.username)
+                            .where('username', '<=', target.username + '\uf8ff')
+                            .get();
+                     if (snapshot.empty) {
+                            error = "user not found ";
+                            return { error };
+                     }
+              }
+              else if (target.email) {
+                     snapshot = await userRef
+                            .where('email', '>=', target.email)
+                            .where('email', '<=', target.email + '\uf8ff')
+                            .get();
+                     if (snapshot.empty) {
+                            error = "user not found ";
+                            return { error };
+                     }
+              }
+              snapshot.docs.forEach(element => {
+                     const user = new User(element.data())
+                     if (user.role != target.role) {
+                            userResults.push(user);
+                     }
+              });
+              return { userResults };
+       } catch (error) {
+              console.log(`Error : ${error}`)
+              return (error)
+       }
+
+
+
+}
+
+

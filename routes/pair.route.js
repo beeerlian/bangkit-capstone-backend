@@ -1,4 +1,4 @@
-const controller = require("../controllers/user.controller")
+const controller = require("../controllers/pair.controller")
 const { authJwt } = require("../middlewares/middleware");
 
 module.exports = function (app) {
@@ -10,14 +10,21 @@ module.exports = function (app) {
               );
               next();
        });
-       app.get(
-              "/api/user/all",
+
+       app.post(
+              "/api/pair/send",
               [authJwt.verifyToken],
-              controller.getUsers
+              controller.sendPairRequest
        );
+
        app.get(
-              "/api/user/search",
+              "/api/pair/inbox",
               [authJwt.verifyToken],
-              controller.searchUser
+              controller.getPairingInbox
+       );
+       app.post(
+              "/api/pair/accept",
+              [authJwt.verifyToken],
+              controller.acceptPairingRequest
        );
 };

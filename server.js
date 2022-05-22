@@ -4,6 +4,7 @@ const app = express();
 const authRoute = require("./routes/auth.route")
 const userRoute = require("./routes/user.route")
 const notificationRoute = require("./routes/notification.route")
+const pairRoute = require("./routes/pair.route")
 
 var corsOptions = {
        origin: "https://securitycam.herokuapp.com"
@@ -28,6 +29,7 @@ app.get('/', (req, res, next) => {
 authRoute(app)
 userRoute(app)
 notificationRoute(app)
+pairRoute(app)
 
 const port = process.env.PORT || 8080;
 
