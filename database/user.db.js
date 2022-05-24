@@ -108,8 +108,7 @@ exports.searchUserByUsernameOrEmail = async (target) => {
               });
               return { userResults };
        } catch (error) {
-              console.log(`Error : ${error}`)
-              return (error)
+              return {error}
        }
 
 

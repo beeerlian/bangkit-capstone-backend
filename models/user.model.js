@@ -1,15 +1,3 @@
-module.exports = (obj) => {
-       const User = {
-              id: obj.id || null,
-              username: obj.username || null,
-              email: obj.email || null,
-              password: obj.password || null,
-       };
-       return User;
-};
-
-
-
 class User {
        constructor(obj) {
               this.id = obj.id || null;
@@ -19,6 +7,7 @@ class User {
               this.role = obj.role || null;
               this.fcm = obj.fcm || null;
               this.lastLoggedIn = obj.lastLoggedIn || null;
+              this.connection = obj.connection || [];
        }
        toObj() {
               return {
@@ -29,6 +18,7 @@ class User {
                      role: this.role,
                      fcm: this.fcm,
                      lastLoggedIn: this.lastLoggedIn,
+                     connection : this.connection,
               }
        }
        toObjSensored() {

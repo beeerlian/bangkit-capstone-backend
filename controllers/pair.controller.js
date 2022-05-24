@@ -1,10 +1,12 @@
 const pairDb = require("../database/pair.db");
 const userDb = require("../database/user.db");
 const notifDb = require("../database/notification.db");
+const connectionDb = require("../database/connection.db");
 const response = require("../models/response.model");
 const Notification = require("../models/notification.model");
 const User = require("../models/user.model");
 const PairRequest = require("../models/pairRequest.model");
+const Connection = require("../models/connection.model")
 
 exports.sendPairRequest = async function (req, res) {
        try {
@@ -73,7 +75,6 @@ exports.getPairingInbox = async function (req, res) {
 exports.acceptPairingRequest = async function (req, res) {
        let reciever;
        try {
-              console.log(req)
               const { result, error } = await pairDb.getPairRequestById(req.query.id);
               if (error) {
                      throw new Error(error.message);
@@ -84,12 +85,16 @@ exports.acceptPairingRequest = async function (req, res) {
               if (result.recieverId != req.userId) {
                      throw new Error("youre'nt the request reciever");
               }
+              if (result.accepted) {
+                     throw new Error("youre already connected");
+              }
               await pairDb.updatePairRequest(req.query.id, { accepted: true });
               if (req.userId == result.camDetail.id) {
                      reciever = result.camDetail;
               } else {
                      reciever = result.clientDetail;
               }
+              await addConnection(result.camDetail, result.clientDetail);
               const notif = new Notification({
                      id: this.id,
                      message: `${reciever.username} accept your pairing request`,
@@ -103,5 +108,21 @@ exports.acceptPairingRequest = async function (req, res) {
        } catch (error) {
               console.log(error);
               response.errorResponse(res, error.message);
+       }
+}
+
+const addConnection = async function (cam, client) {
+       let connection = new Connection({
+              user: cam,
+              time: new Date().getTime()
+       })
+       let err = await connectionDb.saveConnection(connection.toObj(), client.id);
+       if (err) {
+              throw Error(err.message)
+       }
+       connection.user = client;
+       err = await connectionDb.saveConnection(connection.toObj(), cam.id);
+       if (err) {
+              throw Error(err.message)
        }
 }
