@@ -22,6 +22,11 @@ module.exports = function (app) {
               [authJwt.verifyToken],
               controller.getPairingInbox
        );
+       app.get(
+              "/api/pair/outbox",
+              [authJwt.verifyToken],
+              controller.getPairingOutbox
+       );
        app.post(
               "/api/pair/accept",
               [authJwt.verifyToken],

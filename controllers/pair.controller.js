@@ -71,6 +71,18 @@ exports.getPairingInbox = async function (req, res) {
        }
 }
 
+exports.getPairingOutbox = async function (req, res) {
+       try {
+              const { result, error } = await pairDb.getPairRequestOutbox(req.userId);
+              if (error) {
+                     throw new Error(error.message);
+              }
+              response.successResponse(res, "success get pairing request data", result);
+       } catch (error) {
+              console.log(error);
+              response.errorResponse(res, error.message);
+       }
+}
 
 exports.acceptPairingRequest = async function (req, res) {
        let reciever;

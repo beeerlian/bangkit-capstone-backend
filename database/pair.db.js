@@ -67,6 +67,30 @@ exports.getPairRequestInbox = async function (id) {
 
 
 /**
+* get all sent pairing request to this user
+*
+* @param string:userId.
+* @return List Of PairRequest if successed, An error message if failed.
+*/
+exports.getPairRequestOutbox = async function (id) {
+       let result = [];
+       try {
+              const res = await pairRequestRef
+                     .where('senderId', "==", id)
+                     .get();
+              if (!res.empty) {
+                     res.docs.forEach(pairRequest => {
+                            result.push(new PairRequest(pairRequest.data()))
+                     }
+                     );
+              }
+              return { result };
+       } catch (error) {
+              return { error }
+       }
+}
+
+/**
 * A function to delete pairing request, 
 *
 * @param string:pairingRequestId.
