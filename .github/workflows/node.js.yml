@@ -37,5 +37,5 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "micah-simple-node-api"
-          heroku_email: "micah@afitnerd.com"
+          heroku_app_name: "securitycam"
+          heroku_email: "naufal.berlian.99.com"
