@@ -1,5 +1,6 @@
 const controller = require("../controllers/user.controller")
 const { authJwt } = require("../middlewares/middleware");
+const connController = require("../controllers/connection.controller")
 
 module.exports = function (app) {
        app.use(function (req, res, next) {
@@ -19,5 +20,10 @@ module.exports = function (app) {
               "/api/user/search",
               [authJwt.verifyToken],
               controller.searchUser
+       );
+       app.get(
+              "/api/user/connections",
+              [authJwt.verifyToken],
+              connController.getAllConnection
        );
 };

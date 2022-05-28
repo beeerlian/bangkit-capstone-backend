@@ -3,7 +3,7 @@ const db = require("./firestore")
 const Notification = require("../models/notification.model");
 const notificationReference = db.collection('notifications');
 
-const saveNotification = async (data) => {
+exports.saveNotification = async (data) => {
        try {
               const res = await notificationReference.add(data);
               let notification = new Notification(data);
@@ -15,14 +15,10 @@ const saveNotification = async (data) => {
        }
 }
 
-const updateNotification = async (notif) => {
+exports.updateNotification = async (notif) => {
        notificationReference.doc(notif.id).update(notif).then(function (data) {
        }, function (error) {
               throw error;
        });
 }
 
-module.exports = {
-       updateNotification,
-       saveNotification
-}

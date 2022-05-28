@@ -33,8 +33,8 @@ exports.sendPairRequest = async function (req, res) {
                      id: `${cam.id}_${client.id}`,
                      senderId: sender.id,
                      recieverId: reciever.id,
-                     camDetail: cam.toObjSensored(),
-                     clientDetail: client.toObjSensored(),
+                     camDetail: cam.toNotificationObj(),
+                     clientDetail: client.toNotificationObj(),
                      time: new Date().getTime()
               });
               //check if pair request already exist

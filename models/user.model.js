@@ -18,7 +18,7 @@ class User {
                      role: this.role,
                      fcm: this.fcm,
                      lastLoggedIn: this.lastLoggedIn,
-                     connection : this.connection,
+                     connection: this.connection,
               }
        }
        toObjSensored() {
@@ -27,6 +27,16 @@ class User {
                      username: this.username,
                      email: this.email,
                      role: this.role,
+                     lastLoggedIn: this.lastLoggedIn,
+              }
+       }
+       toNotificationObj() {
+              return {
+                     id: this.id,
+                     username: this.username,
+                     email: this.email,
+                     role: this.role,
+                     fcm: this.fcm,
                      lastLoggedIn: this.lastLoggedIn,
               }
        }
