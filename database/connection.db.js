@@ -5,7 +5,7 @@ const connectionRef = db.collection('connections');
 
 
 /**
-* save accepted pair request data into connection
+* save status pair request data into connection
 * doc id wil be user id and the data will be connected user data
 *
 * @param Connection object, userid.

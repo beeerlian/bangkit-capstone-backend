@@ -97,10 +97,10 @@ exports.acceptPairingRequest = async function (req, res) {
               if (result.recieverId != req.userId) {
                      throw new Error("youre'nt the request reciever");
               }
-              if (result.accepted) {
+              if (result.status) {
                      throw new Error("youre already connected");
               }
-              await pairDb.updatePairRequest(req.query.id, { accepted: true });
+              await pairDb.updatePairRequest(req.query.id, { status: "ACCEPTED" });
               if (req.userId == result.camDetail.id) {
                      reciever = result.camDetail;
               } else {
@@ -110,6 +110,45 @@ exports.acceptPairingRequest = async function (req, res) {
               const notif = new Notification({
                      id: this.id,
                      message: `${reciever.username} accept your pairing request`,
+                     from: result.recieverId,
+                     to: result.senderId,
+                     imagePath: null,
+                     time: new Date().getTime(),
+              })
+              await notifDb.saveNotification(notif.toObj());
+              response.successResponse(res, "success accept pairing request");
+       } catch (error) {
+              console.log(error);
+              response.errorResponse(res, error.message);
+       }
+}
+
+exports.rejectPairingRequest = async function (req, res) {
+       let reciever;
+       try {
+              const { result, error } = await pairDb.getPairRequestById(req.query.id);
+              if (error) {
+                     throw new Error(error.message);
+              }
+              if (!result) {
+                     throw new Error("couldnt find request");
+              }
+              if (result.recieverId != req.userId) {
+                     throw new Error("youre'nt the request reciever");
+              }
+              if (result.status != "PENDING") {
+                     throw new Error("youre already connected/reject this request");
+              }
+              await pairDb.updatePairRequest(req.query.id, { status: "REJECTED" });
+              if (req.userId == result.camDetail.id) {
+                     reciever = result.camDetail;
+              } else {
+                     reciever = result.clientDetail;
+              }
+              await addConnection(result.camDetail, result.clientDetail);
+              const notif = new Notification({
+                     id: this.id,
+                     message: `${reciever.username} reject your pairing request`,
                      from: result.recieverId,
                      to: result.senderId,
                      imagePath: null,

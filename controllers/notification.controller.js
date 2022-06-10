@@ -26,3 +26,12 @@ exports.sendNotication = async (req, res) => {
 
 
 }
+
+exports.getNotification = async (req, res) => {
+       const notifications = await db.getAllNotification(req.userId)
+       try {
+              return response.successResponse(res, "youre notifications", notifications)
+       } catch (error) {
+              return response.errorResponse(res, `failed to get notifications`)
+       }
+}
