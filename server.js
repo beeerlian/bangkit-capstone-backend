@@ -26,6 +26,8 @@ app.get('/', (req, res, next) => {
        });
 
 });
+
+
 authRoute(app)
 userRoute(app)
 notificationRoute(app)

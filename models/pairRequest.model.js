@@ -5,7 +5,7 @@ class PairRequest {
               this.recieverId = obj.recieverId;
               this.camDetail = obj.camDetail;
               this.clientDetail = obj.clientDetail;
-              this.accepted = obj.accepted || false
+              this.status = obj.status || "PENDING"
               this.time = obj.time || null;
        }
 
@@ -16,7 +16,7 @@ class PairRequest {
                      recieverId: this.recieverId,
                      camDetail: this.camDetail,
                      clientDetail: this.clientDetail,
-                     accepted: this.accepted,
+                     status: this.status,
                      time: this.time
               }
        }

@@ -16,6 +16,11 @@ module.exports = function (app) {
               [authJwt.verifyToken],
               controller.sendPairRequest
        );
+       app.post(
+              "/api/pair/reject",
+              [authJwt.verifyToken],
+              controller.rejectPairingRequest
+       );
 
        app.get(
               "/api/pair/inbox",

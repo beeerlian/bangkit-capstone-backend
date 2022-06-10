@@ -22,3 +22,22 @@ exports.updateNotification = async (notif) => {
        });
 }
 
+exports.getAllNotification = async (userId) => {
+       const notifications = [];
+       try {
+
+              const res = await notificationReference.where("to", "==", userId).get()
+              console.log(res.docs.length)
+              for (const notif of res.docs) {
+                     console.log(notif.data())
+                     const data = new Notification(notif.data())
+                     data.id = notif.id
+                     notifications.push(data.toObj())
+              }
+              return notifications
+       } catch (error) {
+              console.log(error.message)
+              return notifications
+       }
+}
+
