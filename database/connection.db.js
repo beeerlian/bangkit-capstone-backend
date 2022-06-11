@@ -57,3 +57,19 @@ exports.getConnection = async function (searcherId, targetId) {
               return { error };
        }
 }
+
+
+/**
+* get connected user by searcher id, and connected user id
+*
+* @param userid and connected user id.
+* @return A Connection if successed, An error message if failed.
+*/
+exports.deleteConnection = async function (userId, connId) {
+       try {
+              const res = await connectionRef.doc(userId).collection("connection").doc(connId).delete();
+              return { res }
+       } catch (error) {
+              return { error };
+       }
+}

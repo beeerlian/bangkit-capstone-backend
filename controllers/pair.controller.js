@@ -97,7 +97,7 @@ exports.acceptPairingRequest = async function (req, res) {
               if (result.recieverId != req.userId) {
                      throw new Error("youre'nt the request reciever");
               }
-              if (result.status) {
+              if (result.status == "ACCEPTED" || result.status == "REJECTED") {
                      throw new Error("youre already connected");
               }
               await pairDb.updatePairRequest(req.query.id, { status: "ACCEPTED" });
