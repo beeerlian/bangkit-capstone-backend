@@ -39,7 +39,7 @@ exports.sendPairRequest = async function (req, res) {
               });
               //check if pair request already exist
               const duplicate = await pairDb.getPairRequestById(pairRequest.id)
-              if (duplicate.result) {
+              if (duplicate.result.status != "ACCEPTED") {
                      throw new Error("document already exist");
               }
               if (duplicate.error) {
@@ -100,7 +100,7 @@ exports.acceptPairingRequest = async function (req, res) {
               if (result.status == "ACCEPTED" || result.status == "REJECTED") {
                      throw new Error("youre already connected");
               }
-              await pairDb.updatePairRequest(req.query.id, { status: "ACCEPTED" });
+              // await pairDb.updatePairRequest(req.query.id, { status: "ACCEPTED" });
               if (req.userId == result.camDetail.id) {
                      reciever = result.camDetail;
               } else {
