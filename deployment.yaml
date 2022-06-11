@@ -1,50 +1,50 @@
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: express-app-deployment
-# spec:
-#   selector:
-#     matchLabels:
-#       app: express-app
-#   replicas: 1
-#   template:
-#     metadata:
-#       labels:
-#         app: express-app
-#         env: development
-#     spec:
-#       containers:
-#       - name: express-app
-#         image: gcr.io/securicam-351906/express-server:v1
-#         ports:
-#         - containerPort: 4000
-#         env:
-#         - name: PORT
-#           value: "4000"
-#         - name: LOG_LEVEL
-#           value: "info"
-#         - name: NODE_ENV
-#           value: "development"
-#   type: LoadBalancer
-#   ports:
-#   - port: 80
-#     targetPort: 4000
-#     protocol: TCP
-#   selector:
-#     app: express-app    
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: express-app-service
-# spec:
-#   type: LoadBalancer
-#   ports:
-#   - port: 80
-#     targetPort: 4000
-#     protocol: TCP
-#   selector:
-#     app: express-app
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: express-app-deployment
+spec:
+  selector:
+    matchLabels:
+      app: express-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: express-app
+        env: development
+    spec:
+      containers:
+      - name: express-app
+        image: gcr.io/securicam-351906/express-server:v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: PORT
+          value: "8080"
+        - name: LOG_LEVEL
+          value: "info"
+        - name: NODE_ENV
+          value: "development"
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app: express-app    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: express-app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 4000
+    protocol: TCP
+  selector:
+    app: express-app
 
 # Copyright 2021 Google LLC
 #
@@ -60,44 +60,44 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: express-server
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: express-server
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-  minReadySeconds: 5
-  template:
-    metadata:
-      labels:
-        app: express-server
-    spec:
-      containers:
-      - name: hello-app
-        image: gcr.io/securicam-351906/express-server:v1
-        ports:
-        - containerPort: 8080
-        resources:
-          requests:
-            cpu: 100m
-          limits:
-            cpu: 100m
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: express-server-service
-spec:
-  type: LoadBalancer
-  ports:
-    - port: 80
-      targetPort: 8080
-  selector:
-    app: express-server
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: express-server
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: express-server
+#   strategy:
+#     rollingUpdate:
+#       maxSurge: 1
+#       maxUnavailable: 1
+#   minReadySeconds: 5
+#   template:
+#     metadata:
+#       labels:
+#         app: express-server
+#     spec:
+#       containers:
+#       - name: express-server
+#         image: gcr.io/securicam-351906/express-server:v1
+#         ports:
+#         - containerPort: 8080
+#         resources:
+#           requests:
+#             cpu: 100m
+#           limits:
+#             cpu: 100m
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: express-server-service
+# spec:
+#   type: LoadBalancer
+#   ports:
+#     - port: 80
+#       targetPort: 8080
+#   selector:
+#     app: express-server

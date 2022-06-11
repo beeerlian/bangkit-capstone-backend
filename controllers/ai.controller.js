@@ -65,88 +65,88 @@ const sendNotification = async (req, message) => {
        }
 }
 
-const predict = async (file) => {
-       // [START aiplatform_predict_image_classification_sample]
-       /**
-        * TODO(developer): Uncomment these variables before running the sample.\
-        * (Not necessary if passing values as arguments)
-        */
-       const filename = "YOUR_PREDICTION_FILE_NAME";
-       const endpointId = "2072948854264692736";
-       const project = 'sodium-lore-352006';
-       const location = 'us-central1';
-       const aiplatform = require('@google-cloud/aiplatform');
-       const { instance, params, prediction } =
-              aiplatform.protos.google.cloud.aiplatform.v1.schema.predict;
+// const predict = async (file) => {
+//        // [START aiplatform_predict_image_classification_sample]
+//        /**
+//         * TODO(developer): Uncomment these variables before running the sample.\
+//         * (Not necessary if passing values as arguments)
+//         */
+//        const filename = "YOUR_PREDICTION_FILE_NAME";
+//        const endpointId = "2072948854264692736";
+//        const project = 'sodium-lore-352006';
+//        const location = 'us-central1';
+//        const aiplatform = require('@google-cloud/aiplatform');
+//        const { instance, params, prediction } =
+//               aiplatform.protos.google.cloud.aiplatform.v1.schema.predict;
 
-       // Imports the Google Cloud Prediction Service Client library
-       const { PredictionServiceClient } = aiplatform.v1;
+//        // Imports the Google Cloud Prediction Service Client library
+//        const { PredictionServiceClient } = aiplatform.v1;
 
-       // Specifies the location of the api endpoint
-       const clientOptions = {
-              apiEndpoint: 'us-central1-aiplatform.googleapis.com',
-              // keyFilename: './utils/ai-platform-service-account.json',
-              credentials: require('../utils/vertex-ai-user.json')
-       };
+//        // Specifies the location of the api endpoint
+//        const clientOptions = {
+//               apiEndpoint: 'us-central1-aiplatform.googleapis.com',
+//               // keyFilename: './utils/ai-platform-service-account.json',
+//               credentials: require('../utils/vertex-ai-user.json')
+//        };
 
-       console.log('create client ...');
-       // Instantiates a client
-       const predictionServiceClient = new PredictionServiceClient(clientOptions);
-       console.log('success ...');
-       console.log('predict image ...');
+//        console.log('create client ...');
+//        // Instantiates a client
+//        const predictionServiceClient = new PredictionServiceClient(clientOptions);
+//        console.log('success ...');
+//        console.log('predict image ...');
 
-       // Configure the endpoint resource
-       const endpoint = `projects/${project}/locations/${location}/endpoints/${endpointId}`;
+//        // Configure the endpoint resource
+//        const endpoint = `projects/${project}/locations/${location}/endpoints/${endpointId}`;
 
-       const parametersObj = new params.ImageClassificationPredictionParams({
-              confidenceThreshold: 0.5,
-              maxPredictions: 5,
-       });
+//        const parametersObj = new params.ImageClassificationPredictionParams({
+//               confidenceThreshold: 0.5,
+//               maxPredictions: 5,
+//        });
 
-       const parameters = parametersObj.toValue();
+//        const parameters = parametersObj.toValue();
 
-       // const res = await axios.get(file, { responseType: 'arraybuffer' })
-       // const image = Buffer.from(res.data, "base64")
-       const fs = require("fs")
-       const image = fs.readFileSync("./utils/03-pizza-dad.jpeg", 'base64');
-       const instanceObj = new instance.ImageClassificationPredictionInstance({
-              content: file,
-       });
-       console.log(instanceObj.toJSON())
-       const instanceValue = instanceObj.toValue();
-       const instances = [instanceValue];
-       const request = {
-              endpoint,
-              instances,
-              parameters,
-       };
+//        // const res = await axios.get(file, { responseType: 'arraybuffer' })
+//        // const image = Buffer.from(res.data, "base64")
+//        const fs = require("fs")
+//        const image = fs.readFileSync("./utils/03-pizza-dad.jpeg", 'base64');
+//        const instanceObj = new instance.ImageClassificationPredictionInstance({
+//               content: file,
+//        });
+//        console.log(instanceObj.toJSON())
+//        const instanceValue = instanceObj.toValue();
+//        const instances = [instanceValue];
+//        const request = {
+//               endpoint,
+//               instances,
+//               parameters,
+//        };
 
-       // Predict request
-       console.log('Predict request ...');
+//        // Predict request
+//        console.log('Predict request ...');
 
-       const [response] = await predictionServiceClient.predict(request)
-       console.log(`response : ${response}  `);
+//        const [response] = await predictionServiceClient.predict(request)
+//        console.log(`response : ${response}  `);
 
-       console.log(`success ...  `);
-       console.log('Predict image classification response');
-       console.log(`\tDeployed model id : ${response.deployedModelId}`);
-       const predictions = response.predictions;
-       console.log('\tPredictions :');
-       for (const predictionValue of predictions) {
-              const predictionResultObj =
-                     prediction.ClassificationPredictionResult.fromValue(predictionValue);
-              for (const [i, label] of predictionResultObj.displayNames.entries()) {
-                     console.log(`\tDisplay name: ${label}`);
-                     console.log(`\tConfidences: ${predictionResultObj.confidences[i]}`);
-                     console.log(`\tIDs: ${predictionResultObj.ids[i]}\n\n`);
-              }
-       }
+//        console.log(`success ...  `);
+//        console.log('Predict image classification response');
+//        console.log(`\tDeployed model id : ${response.deployedModelId}`);
+//        const predictions = response.predictions;
+//        console.log('\tPredictions :');
+//        for (const predictionValue of predictions) {
+//               const predictionResultObj =
+//                      prediction.ClassificationPredictionResult.fromValue(predictionValue);
+//               for (const [i, label] of predictionResultObj.displayNames.entries()) {
+//                      console.log(`\tDisplay name: ${label}`);
+//                      console.log(`\tConfidences: ${predictionResultObj.confidences[i]}`);
+//                      console.log(`\tIDs: ${predictionResultObj.ids[i]}\n\n`);
+//               }
+//        }
 
-       return predictions;
-       // await predictImageClassification();
-       // [END aiplatform_predict_image_classification_sample]
-}
+//        return predictions;
+//        // await predictImageClassification();
+//        // [END aiplatform_predict_image_classification_sample]
+// }
 
-const toTensor = function (image) {
+// const toTensor = function (image) {
 
-}
+// }
