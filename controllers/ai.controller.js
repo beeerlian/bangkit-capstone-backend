@@ -15,7 +15,7 @@ exports.predictImage = async (req, res) => {
               body = JSON.stringify({
                      image: data
               })
-              const response = await fetch('http://127.0.0.1:8000/predict/',
+              const response = await fetch('https://flask-server-qaxw3k7pja-uc.a.run.app/predict/',
                      {
                             method: 'POST',
                             body: body,
@@ -23,11 +23,11 @@ exports.predictImage = async (req, res) => {
                             // headers: { 'Content-Type': 'multipart/form-data' }
                             headers: { 'Content-Type': 'application/json' }
                      })
-              if (response.status != 200) {
-                     throw Error('Server Internal Error 500')
-              }
               const jsonRest = await response.json()
               console.log(jsonRest)
+              if (response.status != 200) {
+                     throw Error(jsonRest)
+              }
               if (!jsonRest['data'] || !jsonRest['success']) {
                      return resHelper.successResponse(res, "predict failed")
 
@@ -43,7 +43,7 @@ exports.predictImage = async (req, res) => {
 
        } catch (error) {
               console.log(`[error] ${error.message}`)
-              return resHelper.errorResponse(res, `failed to send notification`)
+              return resHelper.errorResponse(res, error)
        }
 
 }
