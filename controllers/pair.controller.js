@@ -65,14 +65,15 @@ exports.getPairingInbox = async function (req, res) {
               if (error) {
                      throw new Error(error.message);
               }
-              const res = []
-
+              const pairingRequest = [];
               for (const pairing of result) {
+                     console.log(pairing)
                      if (pairing.status == 'PENDING') {
-                            res.push(pairing)
+                            pairingRequest.push(pairing)
                      }
               }
-              response.successResponse(res, "success get pairing request data", res);
+              return response.successResponse(res, "success get pairing request data", pairingRequest);
+              console.log("Done")
        } catch (error) {
               console.log(error);
               response.errorResponse(res, error.message);
@@ -85,14 +86,14 @@ exports.getPairingOutbox = async function (req, res) {
               if (error) {
                      throw new Error(error.message);
               }
-              const res = []
+              const pairingRequest = []
 
               for (const pairing of result) {
                      if (pairing.status == 'PENDING') {
-                            res.push(pairing)
+                            pairingRequest.push(pairing)
                      }
               }
-              response.successResponse(res, "success get pairing request data", res);
+              response.successResponse(res, "success get pairing request data", pairingRequest);
        } catch (error) {
               console.log(error);
               response.errorResponse(res, error.message);
