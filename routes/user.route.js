@@ -26,4 +26,9 @@ module.exports = function (app) {
               [authJwt.verifyToken],
               connController.getAllConnection
        );
+       app.post(
+              "/api/user/connection/delete",
+              [authJwt.verifyToken],
+              connController.deleteConnection
+       );
 };

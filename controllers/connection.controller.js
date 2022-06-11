@@ -19,10 +19,13 @@ exports.deleteConnection = async (req, res) => {
        try {
               const userRes = await connDb.deleteConnection(req.userId, req.body.connectionId)
               const connectionRes = await connDb.deleteConnection(req.body.connectionId, req.userId)
-              if (userRes.error || connectionRes.error) {
-                     throw new Error(conns.error.message)
+              if (userRes.error) {
+                     throw new Error(userRes.error.message)
               }
-              response.successResponse(res, "success delete connection", conns.connections)
+              if (connectionRes.error) {
+                     throw new Error(connectionRes.error.message)
+              }
+              response.successResponse(res, "success delete connection")
               let notif = new Notification({
                      message: `you're deleted from ${req.userId} connection`,
                      from: req.userId,
