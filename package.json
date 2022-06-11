@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha ./__test__/* --exit",
-    "dev": "nodemon server.js",
-    "start": "npm run server.js"
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
