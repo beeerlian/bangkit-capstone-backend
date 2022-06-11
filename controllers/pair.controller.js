@@ -35,20 +35,20 @@ exports.sendPairRequest = async function (req, res) {
                      recieverId: reciever.id,
                      camDetail: cam.toNotificationObj(),
                      clientDetail: client.toNotificationObj(),
+                     status: "PENDING",
                      time: new Date().getTime()
               });
               //check if pair request already exist
               const duplicate = await pairDb.getPairRequestById(pairRequest.id)
-              console.log(JSON.stringify(duplicate.result))
-              if (duplicate.result.status != "ACCEPTED") {
-                     throw new Error(duplicate.result);
+              if (duplicate.result && duplicate.result.status != "ACCEPTED") {
+                     throw new Error("document already exist");
               }
               if (duplicate.error) {
-                     throw new Error(duplicate.error.message);
+                     throw new Error("Error : " + duplicate.error.message);
               }
               const { result, error } = await pairDb.savePairRequest(pairRequest.toObj());
               if (error) {
-                     response.errorResponse(res, error);
+                     response.errorResponse(res, "Error Saving Request : " + error);
               }
               else {
                      response.successResponse(res, "success send pairing request", result.toObj());
