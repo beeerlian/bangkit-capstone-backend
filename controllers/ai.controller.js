@@ -13,11 +13,18 @@ exports.predictImageSimulation = async (req, res) => {
               body = JSON.stringify({
                      image: data
               })
-              resHelper.successResponse(res, "predict success")
-              sendNotification(req, {
-                     description: `Object detected`,
-                     data: "Open this image to see the capture"
-              })
+              var random_boolean = Math.random() < 0.3;
+
+              if (random_boolean) {
+                     resHelper.successResponse(res, "predict success", "Object detected, sending notification to client")
+                     sendNotification(req, {
+                            description: `Object detected`,
+                            data: "Open this image to see the capture"
+                     })
+              } else {
+                     resHelper.successResponse(res, "predict success", "No object detected")
+              }
+
               // await db.updateNotification(notif.toObj());
 
 
