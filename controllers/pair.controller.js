@@ -30,7 +30,7 @@ exports.sendPairRequest = async function (req, res) {
                      client = sender;
               }
               const pairRequest = new PairRequest({
-                     id: `${cam.id}_${client.id}`,
+                     id: `${cam.id}-${client.id}-${new Date().getTime()}`,
                      senderId: sender.id,
                      recieverId: reciever.id,
                      camDetail: cam.toNotificationObj(),
