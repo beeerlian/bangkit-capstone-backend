@@ -64,7 +64,14 @@ exports.getPairingInbox = async function (req, res) {
               if (error) {
                      throw new Error(error.message);
               }
-              response.successResponse(res, "success get pairing request data", result);
+              const res = []
+
+              for (const pairing of result) {
+                     if (pairing.status == 'PENDING') {
+                            res.push(pairing)
+                     }
+              }
+              response.successResponse(res, "success get pairing request data", res);
        } catch (error) {
               console.log(error);
               response.errorResponse(res, error.message);
@@ -77,7 +84,14 @@ exports.getPairingOutbox = async function (req, res) {
               if (error) {
                      throw new Error(error.message);
               }
-              response.successResponse(res, "success get pairing request data", result);
+              const res = []
+
+              for (const pairing of result) {
+                     if (pairing.status == 'PENDING') {
+                            res.push(pairing)
+                     }
+              }
+              response.successResponse(res, "success get pairing request data", res);
        } catch (error) {
               console.log(error);
               response.errorResponse(res, error.message);
