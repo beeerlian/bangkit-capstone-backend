@@ -39,8 +39,9 @@ exports.sendPairRequest = async function (req, res) {
               });
               //check if pair request already exist
               const duplicate = await pairDb.getPairRequestById(pairRequest.id)
+              console.log(JSON.stringify(duplicate.result))
               if (duplicate.result.status != "ACCEPTED") {
-                     throw new Error("document already exist");
+                     throw new Error(duplicate.result);
               }
               if (duplicate.error) {
                      throw new Error(duplicate.error.message);
