@@ -34,7 +34,7 @@ module.exports = function (app) {
                      authJwt.verifyToken,
                      multerMiddleware.single('image')
               ],
-              ai.predictImage
+              ai.predictImageSimulation
        )
 
 };

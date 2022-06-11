@@ -6,6 +6,27 @@ const resHelper = require("../models/response.model")
 const Notification = require("../models/notification.model")
 
 
+exports.predictImageSimulation = async (req, res) => {
+       try {
+              data = Buffer.from(req.file.buffer).toString('base64')
+              // const data = await storage.saveImage(req.file);
+              body = JSON.stringify({
+                     image: data
+              })
+              resHelper.successResponse(res, "predict success")
+              sendNotification(req, {
+                     description: `Object detected`,
+                     data: "Open this image to see the capture"
+              })
+              // await db.updateNotification(notif.toObj());
+
+
+       } catch (error) {
+              console.log(`[error] ${error.message}`)
+              return resHelper.errorResponse(res, error)
+       }
+
+}
 
 exports.predictImage = async (req, res) => {
        try {
@@ -28,6 +49,7 @@ exports.predictImage = async (req, res) => {
               if (response.status != 200) {
                      throw Error(jsonRest)
               }
+
               if (!jsonRest['data'] || !jsonRest['success']) {
                      return resHelper.successResponse(res, "predict failed")
 
@@ -53,7 +75,7 @@ const sendNotification = async (req, message) => {
        if (conns.error) {
               throw new Error(conns.error.message)
        }
-       const imagePath = await storage.saveImage(req.file);
+       const imagePath = "https://storage.googleapis.com/securicam-351906.appspot.com/1654502187174_03-pizza-dad.jpeg"
        let notif = new Notification({
               message: message,
               from: req.userId,
