@@ -98,7 +98,7 @@ const sendNotification = async (req, message, data) => {
               throw new Error(conns.error.message)
        }
        // const imagePath = "https://storage.googleapis.com/securicam-351906.appspot.com/1654502187174_03-pizza-dad.jpeg"
-       const imagePath = storage.saveImage(req.file)
+       const imagePath = await storage.saveImage(req.file)
        let notif = new Notification({
               message: message,
               data: data,
