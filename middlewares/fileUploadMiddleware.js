@@ -26,35 +26,39 @@ module.exports = (path, app) => {
 
        app.use((req, res, next) => {
               console.log('busboy middleware processing uploaded file')
-              if (req.method === "POST" && req.headers["content-type"].startsWith("multipart/form-data")) {
-                     const busboy = Busboy({
-                            headers: req.headers
-                     });
-                     let buffer = Buffer.from("");
-                     req.files = {
-                            file: []
-                     };
+              if (req.method === "POST" && req.headers["content-type"]) {
+                     if (req.headers["content-type"].startsWith("multipart/form-data")) {
 
-                     busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
-                            file.on("data", (data) => {
-                                   buffer = Buffer.concat([buffer, data]);
+
+                            const busboy = Busboy({
+                                   headers: req.headers
+                            });
+                            let buffer = Buffer.from("");
+                            req.files = {
+                                   file: []
+                            };
+
+                            busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
+                                   file.on("data", (data) => {
+                                          buffer = Buffer.concat([buffer, data]);
+                                   });
+
+                                   file.on("end", () => {
+                                          const file_object = {
+                                                 fieldname,
+                                                 originalname: filename,
+                                                 encoding,
+                                                 mimetype,
+                                                 buffer
+                                          };
+                                          // req.files.file = file_object
+                                          req.files.file = file_object;
+                                          next();
+                                   });
                             });
 
-                            file.on("end", () => {
-                                   const file_object = {
-                                          fieldname,
-                                          originalname: filename,
-                                          encoding,
-                                          mimetype,
-                                          buffer
-                                   };
-                                   // req.files.file = file_object
-                                   req.files.file = file_object;
-                                   next();
-                            });
-                     });
-
-                     busboy.end(req.rawBody);
+                            busboy.end(req.rawBody);
+                     }
               } else {
                      next();
               }
