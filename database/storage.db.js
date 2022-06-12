@@ -1,9 +1,9 @@
 const gcsBucket = require("./cloudStorage")
 
 exports.saveImage = (image) => new Promise((resolve, reject) => {
-       console.log("uploading " + image.originalname + " to " + gcsBucket.name)
+       console.log("uploading " + image.originalname.filename + " to " + gcsBucket.name)
        const date = new Date().getTime();
-       const file = gcsBucket.file(date + '_' + image.originalname.replace(/ /g, "_"));
+       const file = gcsBucket.file(date + '_' + image.originalname.filename.replace(/ /g, "_"));
        const fileStream = file.createWriteStream({
               resumable: false
        });

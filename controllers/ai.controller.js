@@ -4,16 +4,18 @@ const notifdb = require("../database/notification.db")
 const fetch = require('node-fetch')
 const resHelper = require("../models/response.model")
 const Notification = require("../models/notification.model")
+const { json } = require("body-parser")
 
 
 exports.predictImageSimulation = async (req, res) => {
-       console.log("req : " + req)
-       console.log("req.file : " + req.file)
-       console.log("req.files : " + req.files)
-       console.log("req.body.file : " + req.body.file)
+       // console.log("req : " + req)
+       // console.log("req.file : " + req.file)
+       // console.log("req.files.file : " + JSON.stringify(req.files.file))
+       // console.log("req.body.file : " + req.files.file.originalName)
+       console.log("uploading " + req.files.file.originalname.filename)
 
        try {
-              data = Buffer.from(req.file.buffer).toString('base64')
+              data = Buffer.from(req.files.file.buffer).toString('base64')
               // const data = await storage.saveImage(req.file);
               body = JSON.stringify({
                      image: data
@@ -39,7 +41,10 @@ exports.predictImageSimulation = async (req, res) => {
 
 exports.predictImage = async (req, res) => {
        try {
-              data = Buffer.from(req.file.buffer).toString('base64')
+
+              console.log("uploading " + req.files.file.originalname.filename)
+              data = Buffer.from(req.files.file.buffer).toString('base64')
+              // data = Buffer.from(req.file.buffer).toString('base64')
               // const data = await storage.saveImage(req.file);
               // data = "https://storage.googleapis.com/securicam-351906.appspot.com/1654502187174_03-pizza-dad.jpeg"
               body = JSON.stringify({
@@ -63,7 +68,7 @@ exports.predictImage = async (req, res) => {
                      return resHelper.successResponse(res, "predict failed")
 
               }
-              await sendNotification(req, `Object detected`, jsonRest['data'], req.file)
+              await sendNotification(req, `Object detected`, jsonRest['data'], req.files.file)
               return resHelper.successResponse(res, "predict success", jsonRest['data'])
               // await db.updateNotification(notif.toObj());
 
@@ -98,7 +103,7 @@ const sendNotification = async (req, message, data, image) => {
               throw new Error(conns.error.message)
        }
        // const imagePath = "https://storage.googleapis.com/securicam-351906.appspot.com/1654502187174_03-pizza-dad.jpeg"
-       const imagePath = await storage.saveImage(req.file)
+       const imagePath = await storage.saveImage(image)
        let notif = new Notification({
               message: message,
               data: data,

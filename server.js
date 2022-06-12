@@ -6,6 +6,7 @@ const authRoute = require("./routes/auth.route")
 const userRoute = require("./routes/user.route")
 const notificationRoute = require("./routes/notification.route")
 const pairRoute = require("./routes/pair.route")
+const fileUploadMiddleware = require("./middlewares/fileUploadMiddleware")
 
 var corsOptions = {
        origin: "https://securitycam.herokuapp.com"
@@ -16,6 +17,7 @@ app.use(express.urlencoded({
        extended: true
 }));
 
+fileUploadMiddleware("image", app)
 
 app.get('/', (req, res, next) => {
        res.status(200).json({
