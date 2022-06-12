@@ -15,10 +15,10 @@ verifyToken = (req, res, next) => {
     }
     req.userId = decodedToken.id;
     //user will get new token when he's logged in, so i will check is sended token's is newest or not 
-    const userLastloginTime = (await db.getUserById(req.userId)).lastLoggedIn;
-    if (userLastloginTime > decodedToken.created) {
-      return response.expiringTokenResponse(res);
-    }
+    // const userLastloginTime = (await db.getUserById(req.userId)).lastLoggedIn;
+    // if (userLastloginTime > decodedToken.created) {
+    //   return response.expiringTokenResponse(res);
+    // }
     next();
   });
 };
