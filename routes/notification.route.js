@@ -32,7 +32,7 @@ module.exports = function (app) {
               "/api/ai/predict",
               [
                      authJwt.verifyToken,
-                     multerMiddleware.single('image')
+                     // multerMiddleware.single('image')
               ],
               ai.predictImage
        )

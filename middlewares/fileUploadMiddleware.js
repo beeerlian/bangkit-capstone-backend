@@ -25,6 +25,7 @@ module.exports = (path, app) => {
        })
 
        app.use((req, res, next) => {
+              console.log('busboy middleware processing uploaded file')
               if (req.method === "POST" && req.headers["content-type"].startsWith("multipart/form-data")) {
                      const busboy = Busboy({
                             headers: req.headers
