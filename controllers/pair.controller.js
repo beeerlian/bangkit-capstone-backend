@@ -12,7 +12,7 @@ exports.sendPairRequest = async function (req, res) {
        try {
               let cam, client
               if (req.userId == req.query.reciever) {
-                     throw new Error("youre cant send request to yourself")
+                     throw new Error("you're cant send request to yourself")
               }
               const sender = await userDb.getUserById(req.userId)
               if (!sender) {
@@ -172,7 +172,7 @@ exports.rejectPairingRequest = async function (req, res) {
                      time: new Date().getTime(),
               })
               await notifDb.saveNotification(notif.toObj());
-              response.successResponse(res, "success accept pairing request");
+              response.successResponse(res, "success reject pairing request");
        } catch (error) {
               console.log(error);
               response.errorResponse(res, error.message);
