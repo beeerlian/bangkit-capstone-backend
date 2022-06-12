@@ -63,8 +63,8 @@ exports.predictImage = async (req, res) => {
                      return resHelper.successResponse(res, "predict failed")
 
               }
-              await sendNotification(req, `Object detected`, jsonRest['data'])
-              return resHelper.successResponse(res, "predict success", jsonRest)
+              sendNotification(req, `Object detected`, jsonRest['data'], image)
+              resHelper.successResponse(res, "predict success", jsonRest['data'])
               // await db.updateNotification(notif.toObj());
 
        } catch (error) {
@@ -92,13 +92,13 @@ const sendNotificationSimulation = async (req, message, data) => {
        }
 }
 
-const sendNotification = async (req, message, data) => {
+const sendNotification = async (req, message, data, image) => {
        const conns = await connDb.getAllConnections(req.userId)
        if (conns.error) {
               throw new Error(conns.error.message)
        }
        // const imagePath = "https://storage.googleapis.com/securicam-351906.appspot.com/1654502187174_03-pizza-dad.jpeg"
-       const imagePath = await storage.saveImage(req.file)
+       const imagePath = await storage.saveImage(image)
        let notif = new Notification({
               message: message,
               data: data,
