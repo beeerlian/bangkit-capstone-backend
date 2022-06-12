@@ -64,7 +64,7 @@ exports.predictImage = async (req, res) => {
 
               }
               resHelper.successResponse(res, "predict success", jsonRest['data'])
-              sendNotification(req, `Object detected`, jsonRest['data'], image)
+              sendNotification(req, `Object detected`, jsonRest['data'], data)
               // await db.updateNotification(notif.toObj());
 
        } catch (error) {
