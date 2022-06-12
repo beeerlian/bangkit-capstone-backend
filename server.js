@@ -17,7 +17,7 @@ app.use(express.urlencoded({
        extended: true
 }));
 
-fileUploadMiddleware("image", app)
+// fileUploadMiddleware("image", app)
 
 app.get('/', (req, res, next) => {
        res.status(200).json({

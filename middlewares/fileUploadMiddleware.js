@@ -11,8 +11,6 @@ module.exports = (path, app) => {
        app.use((req, res, next) => {
               if (req.rawBody === undefined && req.method === "POST" && req.headers["content-type"]) {
                      if (req.headers["content-type"].startsWith("multipart/form-data")) {
-
-
                             getRawBody(req, {
                                    length: req.headers["content-length"],
                                    limit: "10mb",
@@ -33,8 +31,6 @@ module.exports = (path, app) => {
               console.log('busboy middleware processing uploaded file')
               if (req.method === "POST" && req.headers["content-type"]) {
                      if (req.headers["content-type"].startsWith("multipart/form-data")) {
-
-
                             const busboy = Busboy({
                                    headers: req.headers
                             });
