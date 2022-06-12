@@ -23,6 +23,7 @@ module.exports = (path, app) => {
                                    next();
                             })
                      }
+                     next();
               } else {
                      next();
               }
@@ -63,6 +64,7 @@ module.exports = (path, app) => {
 
                             busboy.end(req.rawBody);
                      }
+                     next();
               } else {
                      next();
               }
