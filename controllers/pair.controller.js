@@ -69,13 +69,11 @@ exports.getPairingInbox = async function (req, res) {
               }
               const pairingRequest = [];
               for (const pairing of result) {
-                     console.log(pairing)
                      if (pairing.status == 'PENDING') {
                             pairingRequest.push(pairing)
                      }
               }
               return response.successResponse(res, "success get pairing request data", pairingRequest);
-              console.log("Done")
        } catch (error) {
               console.log(error);
               response.errorResponse(res, error.message);
