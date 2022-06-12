@@ -11,7 +11,7 @@ exports.predictImageSimulation = async (req, res) => {
        console.log("file : " + req.file)
        console.log("form : " + req.form)
        try {
-              data = Buffer.from(req.file.buffer).toString('base64')
+              data = Buffer.from(req.body.image.buffer).toString('base64')
               // const data = await storage.saveImage(req.file);
               body = JSON.stringify({
                      image: data
