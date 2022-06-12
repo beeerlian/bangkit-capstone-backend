@@ -19,10 +19,7 @@ exports.predictImageSimulation = async (req, res) => {
 
        //        if (random_boolean) {
        //               resHelper.successResponse(res, "predict success", "Object detected, sending notification to client")
-       //               sendNotification(req, {
-       //                      description: `Object detected`,
-       //                      data: "Open this image to see the capture"
-       //               })
+       //               sendNotification(req, "Object detected")
        //        } else {
        //               resHelper.successResponse(res, "predict success", "No object detected")
        //        }
@@ -35,7 +32,7 @@ exports.predictImageSimulation = async (req, res) => {
        //        return resHelper.errorResponse(res, error)
        // }
 
-       resHelper.successResponse(res, "predict success", JSON.stringify(req))
+       return resHelper.successResponse(res, "predict success", JSON.stringify(req))
 }
 
 exports.predictImage = async (req, res) => {
