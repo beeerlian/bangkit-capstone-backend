@@ -28,7 +28,7 @@ exports.predictImageSimulation = async (req, res) => {
 
        } catch (error) {
               console.log(`[error] ${error.message}`)
-              return resHelper.errorResponse(res, { "error": error.message, "req_detail": req })
+              return resHelper.errorResponse(res, { "error": error.message, "req_detail": JSON.stringify(req) })
        }
 
 }
