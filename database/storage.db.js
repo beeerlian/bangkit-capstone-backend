@@ -14,8 +14,8 @@ exports.saveImage = (image) => new Promise((resolve, reject) => {
                      console.log('file stream finish ' + url);
                      resolve(url);
               })
-                     .on('error', () => {
-                            reject(`upload image failed, problem occur`);
+                     .on('error', (error) => {
+                            reject(`[Error] : ${error} upload image failed, problem occur `);
                      })
                      .end(image.buffer);
        } catch (error) {
