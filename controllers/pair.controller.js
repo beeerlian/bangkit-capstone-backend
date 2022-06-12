@@ -39,15 +39,26 @@ exports.sendPairRequest = async function (req, res) {
                      time: new Date().getTime()
               });
               //check if pair request already exist
-              const duplicate = await pairDb.getPairRequestById(pairRequest.id)
+              const duplicate = await pairDb.getPairRequestOutbox(req.userId)
               if (duplicate.result) {
-                     if (duplicate.result.status != "ACCEPTED") {
-                            throw new Error("document already exist");
+                     for (const pair of duplicate.result) {
+                            if (pair.recieverId == req.query.reciever && pair.status == "PENDING") {
+                                   throw new Error("already send request");
+                            }
                      }
               }
               if (duplicate.error) {
-                     throw new Error("Error : " + duplicate.error.message);
+                     throw new Error("Error1 : " + duplicate.error.message);
               }
+
+              const connected = await connectionDb.getConnection(req.userId, req.query.reciever);
+              if (connected.error) {
+                     throw new Error("Error2 : " + duplicate.error.message);
+              }
+              if (connected.connection) {
+                     throw new Error("already connected");
+              }
+
               const { result, error } = await pairDb.savePairRequest(pairRequest.toObj());
               if (error) {
                      response.errorResponse(res, "Error Saving Request : " + error);
@@ -99,6 +110,8 @@ exports.getPairingOutbox = async function (req, res) {
               response.errorResponse(res, error.message);
        }
 }
+
+
 
 exports.acceptPairingRequest = async function (req, res) {
        let reciever;
@@ -191,3 +204,57 @@ const addConnection = async function (cam, client) {
               throw Error(err.message)
        }
 }
+
+
+// exports.sendPairRequest = async function (req, res) {
+//        try {
+//               let cam, client
+//               if (req.userId == req.query.reciever) {
+//                      throw new Error("you're cant send request to yourself")
+//               }
+//               const sender = await userDb.getUserById(req.userId)
+//               if (!sender) {
+//                      throw new Error("error when get sender data")
+//               }
+//               const reciever = await userDb.getUserById(req.query.reciever)
+//               if (!reciever) {
+//                      response.errorResponse(res, "error when get reciever data");
+//               }
+//               if (sender.role == "CAM") {
+//                      cam = sender;
+//                      client = reciever;
+//               } else {
+//                      cam = reciever;
+//                      client = sender;
+//               }
+//               const pairRequest = new PairRequest({
+//                      id: `${cam.id}-${client.id}-${new Date().getTime()}`,
+//                      senderId: sender.id,
+//                      recieverId: reciever.id,
+//                      camDetail: cam.toNotificationObj(),
+//                      clientDetail: client.toNotificationObj(),
+//                      status: "PENDING",
+//                      time: new Date().getTime()
+//               });
+//               //check if pair request already exist
+//               const duplicate = await pairDb.getPairRequestById(pairRequest.id)
+//               if (duplicate.result) {
+//                      if (duplicate.result.status != "ACCEPTED") {
+//                             throw new Error("document already exist");
+//                      }
+//               }
+//               if (duplicate.error) {
+//                      throw new Error("Error : " + duplicate.error.message);
+//               }
+//               const { result, error } = await pairDb.savePairRequest(pairRequest.toObj());
+//               if (error) {
+//                      response.errorResponse(res, "Error Saving Request : " + error);
+//               }
+//               else {
+//                      response.successResponse(res, "success send pairing request", result.toObj());
+//               }
+//        } catch (error) {
+//               console.log(error);
+//               response.errorResponse(res, error.message);
+//        }
+// }

@@ -73,6 +73,7 @@ exports.getPairRequestInbox = async function (id) {
 * @return List Of PairRequest if successed, An error message if failed.
 */
 exports.getPairRequestOutbox = async function (id) {
+       console.log(id)
        let result = [];
        try {
               const res = await pairRequestRef
