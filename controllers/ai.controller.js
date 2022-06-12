@@ -7,9 +7,8 @@ const Notification = require("../models/notification.model")
 
 
 exports.predictImageSimulation = async (req, res) => {
-       console.log("req : " + req)
        try {
-              data = Buffer.from(req.body.image.buffer).toString('base64')
+              data = Buffer.from(req.file.buffer).toString('base64')
               // const data = await storage.saveImage(req.file);
               body = JSON.stringify({
                      image: data
@@ -28,7 +27,7 @@ exports.predictImageSimulation = async (req, res) => {
 
        } catch (error) {
               console.log(`[error] ${error.message}`)
-              return resHelper.errorResponse(res, { "error": error.message, "req_detail": JSON.stringify(req) })
+              return resHelper.errorResponse(res, error.message)
        }
 
 }
