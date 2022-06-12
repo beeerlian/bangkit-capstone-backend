@@ -9,32 +9,33 @@ const Notification = require("../models/notification.model")
 exports.predictImageSimulation = async (req, res) => {
        console.log("body : " + JSON.stringify(req.body))
        console.log("body.image : " + JSON.stringify(req.body.image))
-       try {
-              data = Buffer.from(req.body.image.buffer).toString('base64')
-              // const data = await storage.saveImage(req.file);
-              body = JSON.stringify({
-                     image: data
-              })
-              var random_boolean = Math.random() < 0.3;
+       // try {
+       //        data = Buffer.from(req.body.image.buffer).toString('base64')
+       //        // const data = await storage.saveImage(req.file);
+       //        body = JSON.stringify({
+       //               image: data
+       //        })
+       //        var random_boolean = Math.random() < 0.3;
 
-              if (random_boolean) {
-                     resHelper.successResponse(res, "predict success", "Object detected, sending notification to client")
-                     sendNotification(req, {
-                            description: `Object detected`,
-                            data: "Open this image to see the capture"
-                     })
-              } else {
-                     resHelper.successResponse(res, "predict success", "No object detected")
-              }
+       //        if (random_boolean) {
+       //               resHelper.successResponse(res, "predict success", "Object detected, sending notification to client")
+       //               sendNotification(req, {
+       //                      description: `Object detected`,
+       //                      data: "Open this image to see the capture"
+       //               })
+       //        } else {
+       //               resHelper.successResponse(res, "predict success", "No object detected")
+       //        }
 
-              // await db.updateNotification(notif.toObj());
+       //        // await db.updateNotification(notif.toObj());
 
 
-       } catch (error) {
-              console.log(`[error] ${error.message}`)
-              return resHelper.errorResponse(res, error)
-       }
+       // } catch (error) {
+       //        console.log(`[error] ${error.message}`)
+       //        return resHelper.errorResponse(res, error)
+       // }
 
+       resHelper.successResponse(res, "predict success", JSON.stringify(req))
 }
 
 exports.predictImage = async (req, res) => {
