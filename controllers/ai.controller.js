@@ -41,8 +41,6 @@ exports.predictImageSimulation = async (req, res) => {
 
 exports.predictImage = async (req, res) => {
        try {
-
-              console.log("uploading " + req.files.file.originalname.filename)
               data = Buffer.from(req.files.file.buffer).toString('base64')
               // data = Buffer.from(req.file.buffer).toString('base64')
               // const data = await storage.saveImage(req.file);
@@ -50,6 +48,8 @@ exports.predictImage = async (req, res) => {
               body = JSON.stringify({
                      image: data
               })
+
+              // const response = await fetch('https://ai-server-slim-qaxw3k7pja-uc.a.run.app/predict/',
               const response = await fetch('https://ai-server-slim-qaxw3k7pja-uc.a.run.app/predict/',
                      {
                             method: 'POST',
@@ -103,12 +103,12 @@ const sendNotification = async (req, message, data, image) => {
               throw new Error(conns.error.message)
        }
        // const imagePath = "https://storage.googleapis.com/securicam-351906.appspot.com/1654502187174_03-pizza-dad.jpeg"
-       const imagePath = await storage.saveImage(image)
+       // const imagePath = await storage.saveImage(image)
        let notif = new Notification({
               message: message,
               data: data,
               from: req.userId,
-              imagePath: imagePath,
+              // imagePath: imagePath,
        });
        for (const conn of conns.connections) {
               notif.to = conn.user.id
