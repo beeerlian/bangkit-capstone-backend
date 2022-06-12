@@ -1,6 +1,7 @@
 const connDb = require("../database/connection.db")
 const notifDb = require("../database/notification.db")
 const response = require("../models/response.model")
+const Notification = require("../models/notification.model")
 
 exports.getAllConnection = async (req, res) => {
        try {
@@ -33,7 +34,7 @@ exports.deleteConnection = async (req, res) => {
                      from: req.userId,
                      to: req.body.connectionId,
               });
-              let { notification, error } = await notifdb.saveNotification(notif.toObj());
+              let { notification, error } = await notifDb.saveNotification(notif.toObj());
        } catch (error) {
               console.log(`Error : ${error}`);
               response.errorResponse(res, error.message)
