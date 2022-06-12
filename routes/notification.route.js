@@ -34,6 +34,14 @@ module.exports = function (app) {
                      authJwt.verifyToken,
                      multerMiddleware.single('image')
               ],
+              ai.predictImage
+       )
+       app.post(
+              "/api/ai/predict-simulation",
+              [
+                     authJwt.verifyToken,
+                     multerMiddleware.single('image')
+              ],
               ai.predictImageSimulation
        )
 

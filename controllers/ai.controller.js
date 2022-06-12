@@ -22,7 +22,7 @@ exports.predictImageSimulation = async (req, res) => {
 
               if (random_boolean) {
                      resHelper.successResponse(res, "predict success", "Object detected, sending notification to client")
-                     sendNotification(req, "Object detected")
+                     sendNotificationSimulation(req, "Object detected")
               } else {
                      resHelper.successResponse(res, "predict success", "No object detected")
               }
@@ -45,7 +45,7 @@ exports.predictImage = async (req, res) => {
               body = JSON.stringify({
                      image: data
               })
-              const response = await fetch('https://flask-server-qaxw3k7pja-uc.a.run.app/predict/',
+              const response = await fetch('https://ai-server-slim-qaxw3k7pja-uc.a.run.app/predict/',
                      {
                             method: 'POST',
                             body: body,
@@ -65,10 +65,7 @@ exports.predictImage = async (req, res) => {
               } else {
                      resHelper.successResponse(res, "predict success", jsonRest)
               }
-              sendNotification(req, {
-                     description: `Object detected`,
-                     data: jsonRest['data']
-              })
+              sendNotification(req, `Object detected`, jsonRest['data'])
               // await db.updateNotification(notif.toObj());
 
 
@@ -79,14 +76,34 @@ exports.predictImage = async (req, res) => {
 
 }
 
-const sendNotification = async (req, message) => {
+const sendNotificationSimulation = async (req, message, data) => {
        const conns = await connDb.getAllConnections(req.userId)
        if (conns.error) {
               throw new Error(conns.error.message)
        }
        const imagePath = "https://storage.googleapis.com/securicam-351906.appspot.com/1654502187174_03-pizza-dad.jpeg"
+       // const imagePath = storage.saveImage(req.file)
        let notif = new Notification({
               message: message,
+              from: req.userId,
+              imagePath: imagePath,
+       });
+       for (const conn of conns.connections) {
+              notif.to = conn.user.id
+              let { notification, error } = await notifdb.saveNotification(notif.toObj());
+       }
+}
+
+const sendNotification = async (req, message, data) => {
+       const conns = await connDb.getAllConnections(req.userId)
+       if (conns.error) {
+              throw new Error(conns.error.message)
+       }
+       // const imagePath = "https://storage.googleapis.com/securicam-351906.appspot.com/1654502187174_03-pizza-dad.jpeg"
+       const imagePath = storage.saveImage(req.file)
+       let notif = new Notification({
+              message: message,
+              data: data,
               from: req.userId,
               imagePath: imagePath,
        });
