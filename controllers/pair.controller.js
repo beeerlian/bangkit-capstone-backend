@@ -161,7 +161,6 @@ exports.rejectPairingRequest = async function (req, res) {
               } else {
                      reciever = result.clientDetail;
               }
-              await addConnection(result.camDetail, result.clientDetail);
               const notif = new Notification({
                      message: `${reciever.username} reject your pairing request`,
                      from: result.recieverId,
