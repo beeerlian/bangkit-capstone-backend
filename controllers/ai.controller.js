@@ -7,9 +7,8 @@ const Notification = require("../models/notification.model")
 
 
 exports.predictImageSimulation = async (req, res) => {
-       console.log("body : " + req.body)
-       console.log("file : " + req.file)
-       console.log("form : " + req.form)
+       console.log("body : " + JSON.stringify(req.body))
+       console.log("body.image : " + JSON.stringify(req.body.image))
        try {
               data = Buffer.from(req.body.image.buffer).toString('base64')
               // const data = await storage.saveImage(req.file);
